@@ -105,7 +105,7 @@ public class login {
 		passwordField.setBounds(279, 197, 167, 32);
 		panel.add(passwordField);
 
-		ImageIcon icon = new ImageIcon("./image/atm.png");
+		ImageIcon icon = new ImageIcon("../image/atm.png");
 		icon.setImage(icon.getImage().getScaledInstance(icon.getIconWidth(),
 				icon.getIconHeight(), Image.SCALE_DEFAULT));
 
