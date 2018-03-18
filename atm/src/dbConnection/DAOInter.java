@@ -22,5 +22,7 @@ public interface DAOInter {
 
 	public void lostUser(String userNo)throws Exception;//π“ ß”√ªß
 
+	public void noLost(String userNo)throws Exception;//Ω‚≥˝π“ ß
+
 
 }

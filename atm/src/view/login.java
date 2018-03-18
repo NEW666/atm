@@ -62,7 +62,7 @@ public class login {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 690, 508);
+		frame.setBounds(100, 100, 680, 508);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		DAOInter adminDAO = DAOFactory.getUserDAOFactory();
 
@@ -152,7 +152,7 @@ public class login {
 
 						}else if(user.getIsLose()&&userPawd.equals(user.getUserPawd())){
 
-							JOptionPane.showMessageDialog(null, "该账号已挂失");
+							JOptionPane.showMessageDialog(null, "该账号已挂失，请到营业厅办理解冻");
 
 						}
 
@@ -208,7 +208,7 @@ public class login {
 		icon.getIconHeight(), Image.SCALE_DEFAULT));
 		JLabel jla = new JLabel();
 		jla.setBackground(Color.LIGHT_GRAY);
-		jla.setBounds(0, 0, 674, 479);
+		jla.setBounds(0, 3, 664, 474);
 		jla.setHorizontalAlignment(0);
 		jla.setIcon(icon);
 		panel.add(jla);

@@ -275,6 +275,35 @@ public class DAOImple implements DAOInter {
 
 		}
 
+
+
+		}
+
+		public void noLost(String userNo)throws Exception{
+
+			String sql = "update user set isLose = true where userNo = ? ";
+			conDatabase dbc = null;
+           PreparedStatement pstmt = null;
+
+           try {
+
+        	   dbc = new conDatabase();
+        	   pstmt = dbc.getConnection().prepareStatement(sql);
+                pstmt.setString(1, userNo);
+
+                pstmt.executeUpdate();
+
+                pstmt.close();
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally{
+
+			dbc.close();
+
+		}
+
+
 		}
 
 

@@ -31,9 +31,9 @@ public class admin extends JFrame {
 	 */
 	public admin() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 690, 508);
+		setBounds(100, 100, 680, 508);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 
@@ -125,7 +125,7 @@ public class admin extends JFrame {
 		panel.add(lblNewLabel);
 		JLabel jla = new JLabel();
 		jla.setBackground(Color.LIGHT_GRAY);
-		jla.setBounds(0, 0, 664, 474);
+		jla.setBounds(0, 3, 664, 474);
 		jla.setHorizontalAlignment(0);
 		jla.setIcon(icon);
 		panel.add(jla);

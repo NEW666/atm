@@ -36,7 +36,7 @@ public class lostUser extends JFrame {
 
 	public lostUser() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100,  674, 479);
+		setBounds(100, 100, 680, 508);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -75,7 +75,7 @@ public class lostUser extends JFrame {
 		contentPane.add(exit);
 		JLabel jla = new JLabel();
 		jla.setBackground(Color.LIGHT_GRAY);
-		jla.setBounds(5, 5, 648, 430);
+		jla.setBounds(0, 3, 664, 474);
 		jla.setHorizontalAlignment(0);
 		jla.setIcon(icon);
 		contentPane.add(jla);
@@ -157,7 +157,7 @@ public class lostUser extends JFrame {
 						adminDAO.lostUser(textField.getText());
 						textField.setText(null);
 						passwordField.setText(null);
-						JOptionPane.showMessageDialog(null,"挂失成功");
+						JOptionPane.showMessageDialog(null,"挂失成功,该账号将冻结");
 
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
