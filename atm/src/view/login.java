@@ -32,6 +32,7 @@ public class login {
 	private JFrame frame;
 	private JTextField textField;
 	private JPasswordField passwordField;
+	private  int count = 0;
 
 	/**
 	 * Launch the application.
@@ -80,6 +81,7 @@ public class login {
 		panel.add(label_1);
 
 		textField = new JTextField();
+		textField.setText("100");
 		textField.setBounds(279, 147, 167, 32);
 		panel.add(textField);
 		textField.setColumns(10);
@@ -87,11 +89,11 @@ public class login {
 		JRadioButton rdbtnNewRadioButton = new JRadioButton("\u7528\u6237");
 		rdbtnNewRadioButton.setBackground(Color.LIGHT_GRAY);
 		rdbtnNewRadioButton.setFont(new Font("宋体", Font.PLAIN, 18));
-		rdbtnNewRadioButton.setSelected(true);
 		rdbtnNewRadioButton.setBounds(194, 254, 93, 26);
 		panel.add(rdbtnNewRadioButton);
 
 		JRadioButton radioButton = new JRadioButton("\u7BA1\u7406\u5458");
+		radioButton.setSelected(true);
 		radioButton.setBackground(Color.LIGHT_GRAY);
 		radioButton.setFont(new Font("宋体", Font.PLAIN, 18));
 		radioButton.setBounds(353, 254, 93, 26);
@@ -103,11 +105,10 @@ public class login {
 
 		passwordField = new JPasswordField();
 		passwordField.setBounds(279, 197, 167, 32);
+		passwordField.setText("123");
 		panel.add(passwordField);
 
-		ImageIcon icon = new ImageIcon("./image/atm.png");
-		icon.setImage(icon.getImage().getScaledInstance(icon.getIconWidth(),
-				icon.getIconHeight(), Image.SCALE_DEFAULT));
+
 
 		JButton btnNewButton = new JButton("\u767B\u5F55");
 		btnNewButton.setFont(new Font("宋体", Font.PLAIN, 24));
@@ -126,19 +127,34 @@ public class login {
 					try {
 						user = adminDAO.queryUserById(userNo);
 						if (user == null) {
-
 							JOptionPane.showMessageDialog(null, "账号不存在");
 
-						} else {
+						}else	if (userNo.equals(user.getUserNo())
+								&& userPawd.equals(user.getUserPawd())) {
+							frame.setVisible(false);
+						} else if(!userPawd.equals(user.getUserPawd())){
 
-							if (userNo.equals(user.getUserNo())
-									&& userPawd.equals(user.getUserPawd())) {
-								frame.setVisible(false);
-							} else {
+							count++;
 
-								JOptionPane.showMessageDialog(null, "账号错误");
+							JOptionPane.showMessageDialog(null, "密码错误");
 
-							}
+							if(count>1){
+
+								adminDAO.frozenUser(userNo);
+
+							}else if(user.getIsFrozen() &&userPawd.equals(user.getUserPawd())){
+
+							JOptionPane.showMessageDialog(null, "账号已冻结，请到营业厅办理解冻");
+
+						}else if(user.getIsDelete()&&userPawd.equals(user.getUserPawd())){
+
+							JOptionPane.showMessageDialog(null, "该账号已注销");
+
+						}else if(user.getIsLose()&&userPawd.equals(user.getUserPawd())){
+
+							JOptionPane.showMessageDialog(null, "该账号已挂失");
+
+						}
 
 						}
 					} catch (Exception e1) {
@@ -155,15 +171,20 @@ public class login {
 					try {
 						Admin admin = adminDAO.queryAdminById(adminNo);
 						if (admin == null) {
+
 							JOptionPane.showMessageDialog(null, "账号不存在");
-						} else {
+
+						}else {
 
 							if (adminNo.equals(admin.getAdminNo())
 									&& adminPawd.equals(admin.getAdminPawd())) {
 								frame.setVisible(false);
+								admin  adminFrame = new admin();
+								adminFrame.setVisible(true);
 							} else {
 
 								JOptionPane.showMessageDialog(null, "账号错误");
+
 
 							}
 
@@ -180,6 +201,11 @@ public class login {
 		});
 
 		panel.add(btnNewButton);
+
+
+		ImageIcon icon = new ImageIcon("./image/atm.png");
+		icon.setImage(icon.getImage().getScaledInstance(icon.getIconWidth(),
+		icon.getIconHeight(), Image.SCALE_DEFAULT));
 		JLabel jla = new JLabel();
 		jla.setBackground(Color.LIGHT_GRAY);
 		jla.setBounds(0, 0, 674, 479);
@@ -188,4 +214,6 @@ public class login {
 		panel.add(jla);
 
 	}
+
+
 }

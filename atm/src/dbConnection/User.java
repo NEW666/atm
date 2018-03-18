@@ -12,9 +12,9 @@ public class User {
 	private String transfer;
 	private String tftime;
 	private String total;
-	private String isLose;
-	private String isFrozen;
-	private String isDelete;
+	private boolean isLose;
+	private boolean isFrozen;
+	private boolean isDelete;
 
 	public String getUserNo() {
 		return userNo;
@@ -76,22 +76,22 @@ public class User {
 	public void setTotal(String total) {
 		this.total = total;
 	}
-	public String getIsLose() {
+	public boolean getIsLose() {
 		return isLose;
 	}
-	public void setIsLose(String isLose) {
+	public void setIsLose(boolean isLose) {
 		this.isLose = isLose;
 	}
-	public String getIsFrozen() {
+	public boolean getIsFrozen() {
 		return isFrozen;
 	}
-	public void setIsFrozen(String isFrozen) {
+	public void setIsFrozen(boolean isFrozen) {
 		this.isFrozen = isFrozen;
 	}
-	public String getIsDelete() {
+	public boolean getIsDelete() {
 		return isDelete;
 	}
-	public void setIsDelete(String isDelete) {
+	public void setIsDelete(boolean isDelete) {
 		this.isDelete = isDelete;
 	}
 
