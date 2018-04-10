@@ -173,11 +173,11 @@ public class unfrozenUser extends JFrame {
 
                 	JOptionPane.showMessageDialog(null,"账号不存在");
 
-                }else if(!user.getIsFrozen()) {
+                }else if(!user.isFrozen()) {
 
                 	JOptionPane.showMessageDialog(null,"账号已解冻");
 
-                }else if(user.getIsLose()){
+                }else if(user.isLose()){
 
                 	try {
 						adminDAO.noLost(textField.getText());

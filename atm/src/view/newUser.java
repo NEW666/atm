@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import dbConnection.DAOFactory;
 import dbConnection.DAOInter;
 import dbConnection.User;
+import dbConnection.UserMsg;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -28,16 +29,20 @@ import java.awt.event.MouseListener;
 import java.util.Calendar;
 
 import javax.swing.JPasswordField;
+import javax.swing.SwingConstants;
 
 public class newUser extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField account;
 	private JTextField userName;
-	private JTextField save;
 	DAOInter adminDAO = DAOFactory.getUserDAOFactory();
 	private JPasswordField pawds;
 	private JPasswordField pawds_2;
+	private JTextField IDNo;
+	private JTextField phoneNo;
+	String ran_account = String.valueOf(Calendar.getInstance().getTime()
+			.getTime());
+	String ran_cus = String.valueOf(Calendar.getInstance().getTime().getTime());
 
 	public newUser() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -51,145 +56,124 @@ public class newUser extends JFrame {
 		icon.setImage(icon.getImage().getScaledInstance(icon.getIconWidth(),
 				icon.getIconHeight(), Image.SCALE_DEFAULT));
 
-		JLabel label = new JLabel("\u8BF7\u8F93\u5165\u8D26\u53F7");
-		label.setFont(new Font("宋体", Font.PLAIN, 20));
-		label.setBounds(178, 99, 110, 42);
-		contentPane.add(label);
+		JLabel account = new JLabel("\u8D26\u53F7");
+		account.setFont(new Font("宋体", Font.PLAIN, 20));
+		account.setBounds(193, 99, 80, 42);
+		contentPane.add(account);
 
 		JLabel label_1 = new JLabel("\u8BF7\u8F93\u5165\u5BC6\u7801");
 		label_1.setFont(new Font("宋体", Font.PLAIN, 20));
-		label_1.setBounds(178, 151, 110, 42);
+		label_1.setBounds(163, 275, 110, 42);
 		contentPane.add(label_1);
 
+		JLabel accountNo = new JLabel("");
+		accountNo.setBounds(298, 111, 181, 30);
+		contentPane.add(accountNo);
+		accountNo.setText(ran_account);
 
 		pawds = new JPasswordField();
 		pawds.setFont(new Font("宋体", Font.PLAIN, 16));
-		pawds.setBounds(313, 160, 181, 30);
+		pawds.setBounds(298, 283, 181, 30);
 		contentPane.add(pawds);
 
 		pawds_2 = new JPasswordField();
 		pawds_2.setFont(new Font("宋体", Font.PLAIN, 16));
-		pawds_2.setBounds(313, 209, 181, 30);
+		pawds_2.setBounds(298, 323, 181, 30);
 		contentPane.add(pawds_2);
 
-		account = new JTextField();
-		account.setFont(new Font("宋体", Font.PLAIN, 16));
-		account.setBounds(313, 108, 181, 30);
-		contentPane.add(account);
-		account.setColumns(10);
-
-		JLabel lblNewLabel = new JLabel("\u8BF7\u8F93\u5165\u7528\u6237\u540D");
-		lblNewLabel.setFont(new Font("宋体", Font.PLAIN, 20));
-		lblNewLabel.setBounds(169, 252, 151, 42);
-		contentPane.add(lblNewLabel);
+		JLabel name = new JLabel("\u8BF7\u8F93\u5165\u59D3\u540D");
+		name.setFont(new Font("宋体", Font.PLAIN, 20));
+		name.setBounds(163, 143, 151, 42);
+		contentPane.add(name);
 
 		userName = new JTextField();
 		userName.setFont(new Font("宋体", Font.PLAIN, 16));
-		userName.setBounds(313, 261, 181, 30);
+		userName.setBounds(298, 151, 181, 30);
 		contentPane.add(userName);
 		userName.setColumns(10);
 
-		JLabel label_2 = new JLabel(
-				"\u8BF7\u8F93\u5165\u9884\u5B58\u91D1\u989D");
-		label_2.setFont(new Font("宋体", Font.PLAIN, 20));
-		label_2.setBounds(157, 304, 151, 42);
-		contentPane.add(label_2);
-
-		save = new JTextField();
-		save.setFont(new Font("宋体", Font.PLAIN, 16));
-		save.setBounds(313, 313, 181, 30);
-		contentPane.add(save);
-		save.setColumns(10);
-		save.setText("50");
-
 		JButton button = new JButton("\u786E\u8BA4");
 		button.setFont(new Font("宋体", Font.PLAIN, 20));
-		button.setBounds(195, 370, 93, 42);
+		button.setBounds(180, 373, 93, 42);
 		contentPane.add(button);
-
 
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Calendar c = Calendar.getInstance();
-				int year = c.get(Calendar.YEAR);
-				 int month = c.get(Calendar.MONTH);
-				int date = c.get(Calendar.DATE);
-				int hour = c.get(Calendar.HOUR_OF_DAY);
-				int minute = c.get(Calendar.MINUTE);
-				int second = c.get(Calendar.SECOND);
-				String stime = year+"年"+month+"月"+date+"日"+hour+":"+minute+":"+second;
 				char[] pawd = pawds.getPassword();
 				String pd = String.valueOf(pawd);
 				char[] userPawd_3 = pawds_2.getPassword();
 				String userPawd_2 = String.valueOf(userPawd_3);
+				String ran_cus = String.valueOf(Calendar.getInstance().getTime().getTime());
 
 				User newuser = new User();
-				newuser.setUserNo(account.getText());
+				newuser.setUserNo(ran_account);
 				newuser.setUserPawd(pd);
-				newuser.setName(userName.getText());
-				newuser.setSave(save.getText());
-				newuser.setStime(stime);
-				newuser.setTftime(null);
-				newuser.setTransfer(null);
-				newuser.setWidthdraw(null);
-				newuser.setWtime(null);
-				newuser.setTotal(null);
-				newuser.setIsDelete(false);
-				newuser.setIsFrozen(false);
-				newuser.setIsLose(false);
+				newuser.setBe_bank("中国银行");
+				newuser.setCusNo(ran_cus);
+				newuser.setDelete(false);
+				newuser.setFrozen(false);
+				newuser.setDelete(false);
+				UserMsg uMsg = new UserMsg();
 
-
+				uMsg.setCusNo(ran_cus);
+				uMsg.setIDNo(IDNo.getText());
+				uMsg.setUserName(userName.getText());
+				uMsg.setUserPhone(phoneNo.getText());
 
 				try {
 
-					if(!pd.equals(userPawd_2)){
+					if (!pd.equals(userPawd_2)) {
 
 						JOptionPane.showMessageDialog(null, "密码不一致");
 
-
-					}else if("".trim().equals(account.getText())){
-
-						JOptionPane.showMessageDialog(null, "账号不可为空");
-
-					}else if("".trim().equals(userName.getText())){
+					} else if ("".trim().equals(userName.getText())) {
 
 						JOptionPane.showMessageDialog(null, "用户名不可为空");
 
-					} else if("".trim().equals(pd.trim())&&"".trim().equals(userPawd_2.trim())){
+					} else if ("".trim().equals(pd.trim())
+							&& "".trim().equals(userPawd_2.trim())) {
 
 						JOptionPane.showMessageDialog(null, "密码框和确认密码框不可为空");
 
-					}else if(adminDAO.queryUserById(account.getText()) != null){
+					} else if (!IDNo
+							.getText()
+							.matches(
+									"^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])((\\d{4})|\\d{3}[A-Z])$")
+							&& !checkCard(IDNo.getText())) {
 
-						JOptionPane.showMessageDialog(null, "账号已存在");
+						JOptionPane.showMessageDialog(null, "输入的身份证号有误");
 
-					}else{
+					} else if(phoneNo.getText().matches("^[0-9]+$")&& phoneNo.getText().length() != 11){
 
-										adminDAO.newAcount(newuser);
-										JOptionPane.showMessageDialog(null, "创建成功");
-										account.setText(null);
-										pawds.setText(null);
-										pawds_2.setText(null);
-										userName.setText(null);
-										save.setText(null);
+						JOptionPane.showMessageDialog(null, "电话号码错误");
 
-									}
+					}else {
 
+						adminDAO.newAcount(newuser, uMsg);
+						JOptionPane.showMessageDialog(null, "创建成功");
+						accountNo.setText("");
+						pawds.setText("");
+						pawds_2.setText("");
+						userName.setText("");
+						IDNo.setText("");
+						phoneNo.setText("");
+						String ran_account = String.valueOf(Calendar.getInstance().getTime()
+								.getTime());
+						accountNo.setText(ran_account);
 
+					}
 
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 
-
-
 			}
 		});
 
 		JButton button_1 = new JButton("\u9000\u51FA");
 		button_1.setFont(new Font("宋体", Font.PLAIN, 20));
-		button_1.setBounds(365, 372, 93, 40);
+		button_1.setBounds(374, 374, 93, 40);
 
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -201,44 +185,41 @@ public class newUser extends JFrame {
 		});
 		contentPane.add(button_1);
 
+		JLabel lable_2 = new JLabel("\u8BF7\u786E\u8BA4\u5BC6\u7801");
+		lable_2.setFont(new Font("宋体", Font.PLAIN, 20));
+		lable_2.setBounds(163, 321, 110, 42);
+		contentPane.add(lable_2);
 
-		JLabel lblNewLabel_1 = new JLabel("\u8BF7\u786E\u8BA4\u5BC6\u7801");
-		lblNewLabel_1.setFont(new Font("宋体", Font.PLAIN, 20));
-		lblNewLabel_1.setBounds(178, 203, 110, 42);
-		contentPane.add(lblNewLabel_1);
+		JLabel ID = new JLabel("\u8BF7\u8F93\u5165\u8EAB\u4EFD\u8BC1\u53F7");
+		ID.setFont(new Font("宋体", Font.PLAIN, 20));
+		ID.setBounds(144, 192, 151, 30);
+		contentPane.add(ID);
 
+		IDNo = new JTextField();
+		IDNo.setBounds(298, 195, 181, 30);
+		contentPane.add(IDNo);
+		IDNo.setColumns(10);
+
+		JLabel phone = new JLabel("\u8BF7\u8F93\u5165\u624B\u673A\u53F7\u7801");
+		phone.setFont(new Font("宋体", Font.PLAIN, 20));
+		phone.setHorizontalAlignment(SwingConstants.TRAILING);
+		phone.setBounds(144, 235, 141, 30);
+		contentPane.add(phone);
+
+		phoneNo = new JTextField();
+		phoneNo.setBounds(298, 235, 181, 30);
+		contentPane.add(phoneNo);
+		phoneNo.setColumns(10);
 
 		JLabel jla = new JLabel();
+		jla.setFont(new Font("宋体", Font.PLAIN, 18));
 		jla.setBackground(Color.LIGHT_GRAY);
 		jla.setBounds(0, 3, 664, 474);
 		jla.setHorizontalAlignment(0);
 		jla.setIcon(icon);
 		contentPane.add(jla);
 
-		account.addFocusListener(new FocusListener(){
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-
-				if(!account.getText().matches("^[0-9a-zA_Z]+$") && !"".trim().equals(account.getText())){
-					JOptionPane.showMessageDialog(null,"只可输入数字和大小写英文");
-					account.setText("");
-
-				}
-
-
-
-			}
-
-        });
-
-		pawds.addFocusListener(new FocusListener(){
+		pawds.addFocusListener(new FocusListener() {
 
 			char[] userPawds = pawds.getPassword();
 			String userPawd = String.valueOf(userPawds);
@@ -252,21 +233,19 @@ public class newUser extends JFrame {
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				if(	!userPawd.matches("^[0-9a-zA_Z]+$")&&!"".trim().equals(userPawd)){
+				if (!userPawd.matches("^[0-9a-zA_Z]+$")
+						&& !"".trim().equals(userPawd)) {
 
-
-					JOptionPane.showMessageDialog(null,"只可输入数字和大小写英文");
+					JOptionPane.showMessageDialog(null, "只可输入数字和大小写英文");
 					pawds.setText("");
 
 				}
 
-
-
 			}
 
-        });
+		});
 
-		pawds_2.addFocusListener(new FocusListener(){
+		pawds_2.addFocusListener(new FocusListener() {
 
 			char[] userPawds = pawds_2.getPassword();
 			String userPawd = String.valueOf(userPawds);
@@ -280,19 +259,71 @@ public class newUser extends JFrame {
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				 if(	!userPawd.matches("^[0-9a-zA_Z]+$")&&!"".trim().equals(userPawd)){
+				if (!userPawd.matches("^[0-9a-zA_Z]+$")
+						&& !"".trim().equals(userPawd)) {
 
-
-					JOptionPane.showMessageDialog(null,"只可输入数字和大小写英文");
-					pawds_2.setText("");
-
+					JOptionPane.showMessageDialog(null, "只可输入数字和大小写英文");
 				}
 
 			}
 
-        });
+		});
 
-		save.addFocusListener(new FocusListener(){
+		pawds_2.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+
+				char[] userPawds = pawds.getPassword();
+				String userPawd = String.valueOf(userPawds);
+
+				char[] userPawd_3 = pawds_2.getPassword();
+				String userPawd_2 = String.valueOf(userPawd_3);
+
+				if (!userPawd.equals(userPawd_2) && !userPawd_2.equals(null)) {
+					JOptionPane.showMessageDialog(null, "密码不一致");
+				}
+
+			}
+
+		});
+
+		IDNo.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+
+				if (!IDNo
+						.getText()
+						.matches(
+								"^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])((\\d{4})|\\d{3}[A-Z])$")&&!IDNo.getText().equals("")) {
+
+					JOptionPane.showMessageDialog(null, "输入的身份证号有误");
+
+				} else if (!checkCard(IDNo.getText())&&!IDNo.getText().trim().equals("")) {
+
+								JOptionPane.showMessageDialog(null, "输入的身份证号有误");
+
+							}
+
+			}
+
+		});
+
+
+		phoneNo.addFocusListener(new FocusListener() {
 
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -304,53 +335,90 @@ public class newUser extends JFrame {
 			public void focusLost(FocusEvent e) {
 
 
+                 if(!phoneNo.getText().matches("^[0-9]+$")&&!phoneNo.getText().equals("")){
+                	 JOptionPane.showMessageDialog(null, "只能输入数字");
+                	 phoneNo.setText("");
+                 }else if(phoneNo.getText().length() !=11 && !phoneNo.getText().equals("")){
+                	 JOptionPane.showMessageDialog(null, "号码有误");
+                 }
 
-			 if(	!save.getText().matches("^[0-9a-zA_Z]+$")&&!"".trim().equals(save.getText())){
 
-
-					JOptionPane.showMessageDialog(null,"只可输入数字和大小写英文");
-					save.setText("");
-
-				}
 			}
 
-        });
+		});
 
-
-
-
-
-		pawds_2.addFocusListener(new FocusListener(){
-
-
-
-
-				@Override
-				public void focusGained(FocusEvent e) {
-					// TODO Auto-generated method stub
-
-
-				}
-
-				@Override
-				public void focusLost(FocusEvent e) {
-
-					char[] userPawds = pawds.getPassword();
-					String userPawd = String.valueOf(userPawds);
-
-					char[] userPawd_3 = pawds_2.getPassword();
-					String userPawd_2 = String.valueOf(userPawd_3);
-
-
-					if( !userPawd.equals(userPawd_2)&& !userPawd_2.equals(null)){
-                    	JOptionPane.showMessageDialog(null,"密码不一致");
-                    }
-
-
-				}
-
-	        });
 
 
 	}
+
+	public boolean checkCard(String no) {
+
+		int i = 0;
+		String r = "error";
+		String lastnumber = "";
+
+	   if(no.length() == 18){
+
+		i += Integer.parseInt(IDNo.getText().substring(0, 1)) * 7;
+		i += Integer.parseInt(IDNo.getText().substring(1, 2)) * 9;
+		i += Integer.parseInt(IDNo.getText().substring(2, 3)) * 10;
+		i += Integer.parseInt(IDNo.getText().substring(3, 4)) * 5;
+		i += Integer.parseInt(IDNo.getText().substring(4, 5)) * 8;
+		i += Integer.parseInt(IDNo.getText().substring(5, 6)) * 4;
+		i += Integer.parseInt(IDNo.getText().substring(6, 7)) * 2;
+		i += Integer.parseInt(IDNo.getText().substring(7, 8)) * 1;
+		i += Integer.parseInt(IDNo.getText().substring(8, 9)) * 6;
+		i += Integer.parseInt(IDNo.getText().substring(9, 10)) * 3;
+		i += Integer.parseInt(IDNo.getText().substring(10, 11)) * 7;
+		i += Integer.parseInt(IDNo.getText().substring(11, 12)) * 9;
+		i += Integer.parseInt(IDNo.getText().substring(12, 13)) * 10;
+		i += Integer.parseInt(IDNo.getText().substring(13, 14)) * 5;
+		i += Integer.parseInt(IDNo.getText().substring(14, 15)) * 8;
+		i += Integer.parseInt(IDNo.getText().substring(15, 16)) * 4;
+		i += Integer.parseInt(IDNo.getText().substring(16, 17)) * 2;
+		i = i % 11;
+		lastnumber = IDNo.getText().substring(17, 18);
+
+	   }else{
+		   return false;
+	   }
+		if (i == 0) {
+			r = "1";
+		}
+		if (i == 1) {
+			r = "0";
+		}
+		if (i == 2) {
+			r = "x";
+		}
+		if (i == 3) {
+			r = "9";
+		}
+		if (i == 4) {
+			r = "8";
+		}
+		if (i == 5) {
+			r = "7";
+		}
+		if (i == 6) {
+			r = "6";
+		}
+		if (i == 7) {
+			r = "5";
+		}
+		if (i == 8) {
+			r = "4";
+		}
+		if (i == 9) {
+			r = "3";
+		}
+		if (i == 10) {
+			r = "2";
+		}
+		if (r.equals(lastnumber.toLowerCase())) {
+			return true;
+		}
+		return false;
+	}
+
 }
