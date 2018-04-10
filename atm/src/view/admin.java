@@ -41,64 +41,64 @@ public class admin extends JFrame {
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 
-		JButton btnNewButton = new JButton("\u5F00\u6237");
-		btnNewButton.setFont(new Font("宋体", Font.PLAIN, 20));
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton newAccount = new JButton("\u5F00\u6237");
+		newAccount.setFont(new Font("宋体", Font.PLAIN, 20));
+		newAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				newUser kaihu = new newUser();
 				setVisible(false);
 				kaihu.setVisible(true);
 			}
 		});
-		btnNewButton.setBounds(31, 151, 106, 47);
-		panel.add(btnNewButton);
+		newAccount.setBounds(31, 112, 106, 47);
+		panel.add(newAccount);
 
-		JButton btnNewButton_1 = new JButton("\u6302\u5931");
-		btnNewButton_1.setBounds(31, 244, 106, 47);
-		panel.add(btnNewButton_1);
+		JButton guashi = new JButton("\u6302\u5931");
+		guashi.setBounds(31, 188, 106, 47);
+		panel.add(guashi);
 
-		JButton btnNewButton_2 = new JButton("\u89E3\u51BB");
-		btnNewButton_2.setFont(new Font("宋体", Font.PLAIN, 20));
-		btnNewButton_2.setBounds(31, 344, 106, 47);
-		panel.add(btnNewButton_2);
+		JButton unFrozen = new JButton("\u89E3\u51BB");
+		unFrozen.setFont(new Font("宋体", Font.PLAIN, 20));
+		unFrozen.setBounds(31, 333, 106, 47);
+		panel.add(unFrozen);
 
-		JButton btnNewButton_3 = new JButton("\u6CE8\u9500");
-		btnNewButton_3.addActionListener(new ActionListener() {
+		JButton zhuxiao = new JButton("\u6CE8\u9500");
+		zhuxiao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				deUser de = new deUser();
 				setVisible(false);
 				de.setVisible(true);
 			}
 		});
-		btnNewButton_3.setFont(new Font("宋体", Font.PLAIN, 20));
-		btnNewButton_3.setBounds(518, 151,106, 47);
-		panel.add(btnNewButton_3);
+		zhuxiao.setFont(new Font("宋体", Font.PLAIN, 20));
+		zhuxiao.setBounds(519, 188,106, 47);
+		panel.add(zhuxiao);
 
-		JButton btnNewButton_5 = new JButton("\u9000\u51FA");
-		btnNewButton_5.addActionListener(new ActionListener() {
+		JButton exit = new JButton("\u9000\u51FA");
+		exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 
 			}
 		});
-		btnNewButton_5.setFont(new Font("宋体", Font.PLAIN, 20));
-		btnNewButton_5.setBounds(518, 344, 106, 47);
-		panel.add(btnNewButton_5);
+		exit.setFont(new Font("宋体", Font.PLAIN, 20));
+		exit.setBounds(548, 400, 106, 47);
+		panel.add(exit);
 
 
 		ImageIcon icon = new ImageIcon("./image/atm.png");
 		icon.setImage(icon.getImage().getScaledInstance(icon.getIconWidth(),
 		icon.getIconHeight(), Image.SCALE_DEFAULT));
 
-		JButton button = new JButton("\u5BC6\u7801\u4FEE\u6539");
-		button.setFont(new Font("宋体", Font.PLAIN, 18));
-		button.setBounds(518, 244, 106, 47);
-		panel.add(button);
+		JButton changePawd = new JButton("\u5BC6\u7801\u4FEE\u6539");
+		changePawd.setFont(new Font("宋体", Font.PLAIN, 18));
+		changePawd.setBounds(519, 258, 106, 47);
+		panel.add(changePawd);
 
 
 		//挂失
-		btnNewButton_1.setFont(new Font("宋体", Font.PLAIN, 20));
-		btnNewButton_1.addActionListener(new ActionListener() {
+		guashi.setFont(new Font("宋体", Font.PLAIN, 20));
+		guashi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				lostUser lu = new lostUser();
@@ -108,13 +108,58 @@ public class admin extends JFrame {
 			}
 		});
 		//解冻功能
-		btnNewButton_2.setFont(new Font("宋体", Font.PLAIN, 20));
-		btnNewButton_2.addActionListener(new ActionListener() {
+		unFrozen.setFont(new Font("宋体", Font.PLAIN, 20));
+		unFrozen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				unfrozenUser unfrozen = new unfrozenUser();
 				unfrozen.setVisible(true);
 				setVisible(false);
+
+
+			}
+		});
+
+		JButton unGuashi = new JButton("\u89E3\u9664\u6302\u5931");
+		unGuashi.setFont(new Font("宋体", Font.PLAIN, 18));
+		unGuashi.setBounds(31, 258, 106, 47);
+		panel.add(unGuashi);
+
+		unGuashi.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				noLost nl = new noLost();
+
+				setVisible(false);
+
+				nl.setVisible(true);
+
+
+
+
+			}
+		});
+
+		JButton query = new JButton("\u67E5\u8BE2");
+		query.setFont(new Font("宋体", Font.PLAIN, 20));
+		query.setBounds(519, 112, 106, 47);
+		panel.add(query);
+
+		JButton frozen = new JButton("\u51BB\u7ED3");
+		frozen.setFont(new Font("宋体", Font.PLAIN, 20));
+		frozen.setBounds(519, 333, 106, 47);
+		panel.add(frozen);
+
+		frozen.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+
+				Frozen frozen = new Frozen();
+				frozen.setVisible(true);
+				setVisible(false);
+
 
 
 			}
@@ -131,7 +176,7 @@ public class admin extends JFrame {
 		panel.add(jla);
 
 		//修改密码
-		button.addActionListener(new ActionListener() {
+		changePawd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				chPawds ch = new chPawds();
@@ -140,7 +185,16 @@ public class admin extends JFrame {
 
 			}
 		});
+
+		//查询
+		query.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				query q = new query();
+				q.setVisible(true);
+			}
+		});
 	}
-
-
 }

@@ -142,15 +142,15 @@ public class login {
 
 								adminDAO.frozenUser(userNo);
 
-							}else if(user.getIsFrozen() &&userPawd.equals(user.getUserPawd())){
+							}else if(user.isFrozen() &&userPawd.equals(user.getUserPawd())){
 
 							JOptionPane.showMessageDialog(null, "账号已冻结，请到营业厅办理解冻");
 
-						}else if(user.getIsDelete()&&userPawd.equals(user.getUserPawd())){
+						}else if(user.isDelete()&&userPawd.equals(user.getUserPawd())){
 
 							JOptionPane.showMessageDialog(null, "该账号已注销");
 
-						}else if(user.getIsLose()&&userPawd.equals(user.getUserPawd())){
+						}else if(user.isLose()&&userPawd.equals(user.getUserPawd())){
 
 							JOptionPane.showMessageDialog(null, "该账号已挂失，请到营业厅办理解冻");
 
