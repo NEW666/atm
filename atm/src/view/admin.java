@@ -18,6 +18,7 @@ import dbConnection.DAOInter;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
+import javax.swing.SwingConstants;
 
 public class admin extends JFrame {
 
@@ -82,7 +83,7 @@ public class admin extends JFrame {
 			}
 		});
 		exit.setFont(new Font("宋体", Font.PLAIN, 20));
-		exit.setBounds(548, 400, 106, 47);
+		exit.setBounds(519, 400, 106, 47);
 		panel.add(exit);
 
 
@@ -142,8 +143,8 @@ public class admin extends JFrame {
 			}
 		});
 
-		JButton query = new JButton("\u67E5\u8BE2");
-		query.setFont(new Font("宋体", Font.PLAIN, 20));
+		JButton query = new JButton("\u67E5\u8BE2\u4EA4\u6613");
+		query.setFont(new Font("宋体", Font.PLAIN, 18));
 		query.setBounds(519, 112, 106, 47);
 		panel.add(query);
 
@@ -164,6 +165,11 @@ public class admin extends JFrame {
 
 			}
 		});
+
+		JButton queryInfo = new JButton("\u67E5\u8BE2\u4FE1\u606F");
+		queryInfo.setFont(new Font("宋体", Font.PLAIN, 18));
+		queryInfo.setBounds(31, 402, 106, 47);
+		panel.add(queryInfo);
 
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setBounds(250, 112, 153, 47);
@@ -194,6 +200,17 @@ public class admin extends JFrame {
 				setVisible(false);
 				query q = new query();
 				q.setVisible(true);
+			}
+		});
+
+		queryInfo.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				queryInfo queryInfo = new queryInfo();
+               queryInfo.setVisible(true);
+
 			}
 		});
 	}

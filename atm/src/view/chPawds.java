@@ -34,7 +34,6 @@ public class chPawds extends JFrame {
 	private JPasswordField snewPawd;
 	private JTextField account;
 	DAOInter adminDAO = DAOFactory.getUserDAOFactory();
-	private JPasswordField pawd;
 
 	public chPawds() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,40 +48,31 @@ public class chPawds extends JFrame {
 
 		JLabel aLabel = new JLabel("\u8BF7\u8F93\u5165\u8D26\u53F7");
 		aLabel.setFont(new Font("宋体", Font.PLAIN, 20));
-		aLabel.setBounds(161, 141, 110, 42);
+		aLabel.setBounds(151, 156, 110, 42);
 		contentPane.add(aLabel);
 
 		JLabel npLabel = new JLabel("\u8BF7\u8F93\u5165\u65B0\u5BC6\u7801");
 		npLabel.setFont(new Font("宋体", Font.PLAIN, 20));
-		npLabel.setBounds(151, 232, 120, 42);
+		npLabel.setBounds(151, 208, 120, 42);
 		contentPane.add(npLabel);
 
 		JLabel spLabel = new JLabel("\u8BF7\u786E\u8BA4\u65B0\u5BC6\u7801");
 		spLabel.setFont(new Font("宋体", Font.PLAIN, 20));
-		spLabel.setBounds(151, 284, 120, 42);
+		spLabel.setBounds(151, 272, 120, 42);
 		contentPane.add(spLabel);
-
-		JLabel pawdLabel = new JLabel("\u8BF7\u8F93\u5165\u5BC6\u7801");
-		pawdLabel.setFont(new Font("宋体", Font.PLAIN, 20));
-		pawdLabel.setBounds(161, 193, 100, 29);
-		contentPane.add(pawdLabel);
-
-		pawd = new JPasswordField();
-		pawd.setBounds(281, 195, 181, 30);
-		contentPane.add(pawd);
 
 		account = new JTextField();
 		account.setFont(new Font("宋体", Font.PLAIN, 16));
-		account.setBounds(281, 149, 181, 30);
+		account.setBounds(281, 164, 181, 30);
 		contentPane.add(account);
 		account.setColumns(10);
 
 		newPawd = new JPasswordField();
-		newPawd.setBounds(281, 241, 181, 30);
+		newPawd.setBounds(281, 217, 181, 30);
 		contentPane.add(newPawd);
 
 		snewPawd = new JPasswordField();
-		snewPawd.setBounds(281, 292, 181, 30);
+		snewPawd.setBounds(281, 281, 181, 30);
 		contentPane.add(snewPawd);
 
 		JButton sure = new JButton("\u786E\u8BA4");
@@ -119,53 +109,6 @@ public class chPawds extends JFrame {
 
 		});
 
-
-
-
-
-		pawd.addFocusListener(new FocusListener() {
-
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-
-				char[] charPawds = pawd.getPassword();
-				String userPawd = String.valueOf(charPawds);
-
-				User user = null;
-
-				try {
-					user = adminDAO.queryUserById(account.getText());
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
-				if (user != null) {
-
-					if (!user.getUserPawd().equals(userPawd)) {
-
-						pawd.setForeground(Color.red);
-						JOptionPane.showMessageDialog(null, "密码错误");
-
-
-					} else if (user.getUserPawd().equals(userPawd)) {
-
-						pawd.setForeground(Color.black);
-					}
-
-				}
-
-			}
-
-		});
-
 		exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -181,8 +124,6 @@ public class chPawds extends JFrame {
 				String userPawd_1 = String.valueOf(charPawds_1);
 				char[] charPawds_2 = snewPawd.getPassword();
 				String userPawd_2 = String.valueOf(charPawds_2);
-				char[] charPawds = pawd.getPassword();
-				String userPawd = String.valueOf(charPawds);
 				User user = null;
 				try {
 					user = adminDAO.queryUserById(account.getText());
@@ -195,7 +136,7 @@ public class chPawds extends JFrame {
 					JOptionPane.showMessageDialog(null, "密码不一致");
 				} else if ("".trim().equals(userPawd_2)) {
 
-					JOptionPane.showMessageDialog(null, "账号不可为空");
+					JOptionPane.showMessageDialog(null, "确认密码框不可为空");
 
 				} else if ("".trim().equals(account.getText())) {
 
@@ -203,15 +144,11 @@ public class chPawds extends JFrame {
 
 				} else if ("".trim().equals(userPawd_1)) {
 
-					JOptionPane.showMessageDialog(null, "密码不可为空");
+					JOptionPane.showMessageDialog(null, "新密码框不可为空");
 
 				} else if (user == null) {
 
 					JOptionPane.showMessageDialog(null, "账号不存在");
-
-				} else if (!user.getUserPawd().equals(userPawd)) {
-
-					JOptionPane.showMessageDialog(null, "密码错误");
 
 				} else {
 
@@ -219,7 +156,6 @@ public class chPawds extends JFrame {
 						adminDAO.changePawds(account.getText(), userPawd_1);
 
 						account.setText("");
-						pawd.setText("");
 						newPawd.setText("");
 						snewPawd.setText("");
 						JOptionPane.showMessageDialog(null, "密码修改成功");

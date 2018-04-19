@@ -7,7 +7,7 @@ public class User {
 	private String userNo;
 	private String userPawd;
 	private String cusNo;
-	private int total;
+	private float total;
 	private String be_bank;
 	private Timestamp op_time;
 
@@ -32,10 +32,10 @@ public class User {
 	public void setCusNo(String i) {
 		this.cusNo = i;
 	}
-	public int getTotal() {
+	public float getTotal() {
 		return total;
 	}
-	public void setTotal(int total) {
+	public void setTotal(float total) {
 		this.total = total;
 	}
 	public String getBe_bank() {

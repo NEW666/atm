@@ -26,6 +26,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.beans.Customizer;
 import java.util.Calendar;
 
 import javax.swing.JPasswordField;
@@ -104,25 +105,25 @@ public class newUser extends JFrame {
 				char[] userPawd_3 = pawds_2.getPassword();
 				String userPawd_2 = String.valueOf(userPawd_3);
 				String ran_cus = String.valueOf(Calendar.getInstance().getTime().getTime());
+				UserMsg um1 = new UserMsg();
+				try {
+					um1 = adminDAO.queryUserMsgByCusID(IDNo.getText());
+				} catch (Exception e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
 
 				User newuser = new User();
-				newuser.setUserNo(ran_account);
-				newuser.setUserPawd(pd);
-				newuser.setBe_bank("中国银行");
-				newuser.setCusNo(ran_cus);
-				newuser.setDelete(false);
-				newuser.setFrozen(false);
-				newuser.setDelete(false);
-				UserMsg uMsg = new UserMsg();
 
-				uMsg.setCusNo(ran_cus);
-				uMsg.setIDNo(IDNo.getText());
-				uMsg.setUserName(userName.getText());
-				uMsg.setUserPhone(phoneNo.getText());
+				UserMsg uMsg = new UserMsg();
 
 				try {
 
-					if (!pd.equals(userPawd_2)) {
+				   if(pd.length()!=6||userPawd_2.length()!=6||!pd.matches("^[0-9]{1,6}$")||!userPawd_2.matches("^[0-9]{1,6}$")){
+
+						JOptionPane.showMessageDialog(null, "密码只可为6位数字");
+
+					}else if (!pd.equals(userPawd_2)) {
 
 						JOptionPane.showMessageDialog(null, "密码不一致");
 
@@ -147,19 +148,68 @@ public class newUser extends JFrame {
 
 						JOptionPane.showMessageDialog(null, "电话号码错误");
 
-					}else {
+					}else if(um1 != null && !um1.getUserName().equals(userName.getText())){
+						JOptionPane.showMessageDialog(null, "名字有误");
+					}else  if(um1 != null && !um1.getUserPhone().equals(phoneNo.getText())){
+						JOptionPane.showMessageDialog(null, "电话有误");
+					}else{
 
-						adminDAO.newAcount(newuser, uMsg);
-						JOptionPane.showMessageDialog(null, "创建成功");
-						accountNo.setText("");
-						pawds.setText("");
-						pawds_2.setText("");
-						userName.setText("");
-						IDNo.setText("");
-						phoneNo.setText("");
-						String ran_account = String.valueOf(Calendar.getInstance().getTime()
-								.getTime());
-						accountNo.setText(ran_account);
+						  if(um1 == null){
+								System.out.println("A");
+								uMsg.setCusNo(ran_cus);
+								uMsg.setIDNo(IDNo.getText());
+								uMsg.setUserName(userName.getText());
+								uMsg.setUserPhone(phoneNo.getText());
+								adminDAO.newAccountCusNo(uMsg);
+								newuser.setUserNo(ran_account);
+								newuser.setUserPawd(pd);
+								newuser.setBe_bank("中国银行");
+								newuser.setCusNo(uMsg.getCusNo());
+								newuser.setDelete(false);
+								newuser.setFrozen(false);
+								newuser.setDelete(false);
+								adminDAO.newAcount(newuser);
+
+//								ran_account = String.valueOf(Calendar.getInstance().getTime()
+//										.getTime());
+//								accountNo.setText(ran_account);
+
+							}else if(um1 != null){
+
+								newuser.setUserNo(ran_account);
+								newuser.setUserPawd(pd);
+								newuser.setBe_bank("中国银行");
+								newuser.setCusNo(um1.getCusNo());
+								newuser.setDelete(false);
+								newuser.setFrozen(false);
+								newuser.setDelete(false);
+								adminDAO.newAcount(newuser);
+//								ran_account = String.valueOf(Calendar.getInstance().getTime()
+//										.getTime());
+//								accountNo.setText(ran_account);
+
+							}
+
+							JOptionPane.showMessageDialog(null, "创建成功");
+							accountNo.setText("");
+							userName.setText("");
+							IDNo.setText("");
+							phoneNo.setText("");
+							pawds.setText("");
+
+							pawds_2.setText("");
+
+							ran_account = String.valueOf(Calendar.getInstance().getTime()
+									.getTime());
+							accountNo.setText(ran_account);
+
+
+
+
+
+
+
+
 
 					}
 
@@ -233,10 +283,10 @@ public class newUser extends JFrame {
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				if (!userPawd.matches("^[0-9a-zA_Z]+$")
+				if (userPawd.matches("^[0-9]{1,6}$")
 						&& !"".trim().equals(userPawd)) {
 
-					JOptionPane.showMessageDialog(null, "只可输入数字和大小写英文");
+					JOptionPane.showMessageDialog(null, "请输入6位数的密码");
 					pawds.setText("");
 
 				}
@@ -259,13 +309,11 @@ public class newUser extends JFrame {
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				if (!userPawd.matches("^[0-9a-zA_Z]+$")
+				if (userPawd.matches("^[0-9]{1,6}$")
 						&& !"".trim().equals(userPawd)) {
-
-					JOptionPane.showMessageDialog(null, "只可输入数字和大小写英文");
-				}
-
+					JOptionPane.showMessageDialog(null, "请输入6位数的密码");
 			}
+		}
 
 		});
 

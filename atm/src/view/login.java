@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 
+import pview.customerFrame;
 import dbConnection.Admin;
 import dbConnection.DAOFactory;
 import dbConnection.DAOInter;
@@ -81,19 +82,18 @@ public class login {
 		panel.add(label_1);
 
 		textField = new JTextField();
-		textField.setText("100");
 		textField.setBounds(279, 147, 167, 32);
 		panel.add(textField);
 		textField.setColumns(10);
 
 		JRadioButton rdbtnNewRadioButton = new JRadioButton("\u7528\u6237");
+		rdbtnNewRadioButton.setSelected(true);
 		rdbtnNewRadioButton.setBackground(Color.LIGHT_GRAY);
 		rdbtnNewRadioButton.setFont(new Font("宋体", Font.PLAIN, 18));
 		rdbtnNewRadioButton.setBounds(194, 254, 93, 26);
 		panel.add(rdbtnNewRadioButton);
 
 		JRadioButton radioButton = new JRadioButton("\u7BA1\u7406\u5458");
-		radioButton.setSelected(true);
 		radioButton.setBackground(Color.LIGHT_GRAY);
 		radioButton.setFont(new Font("宋体", Font.PLAIN, 18));
 		radioButton.setBounds(353, 254, 93, 26);
@@ -105,7 +105,6 @@ public class login {
 
 		passwordField = new JPasswordField();
 		passwordField.setBounds(279, 197, 167, 32);
-		passwordField.setText("123");
 		panel.add(passwordField);
 
 
@@ -126,37 +125,44 @@ public class login {
 					User user;
 					try {
 						user = adminDAO.queryUserById(userNo);
-						if (user == null) {
-							JOptionPane.showMessageDialog(null, "账号不存在");
+						if (user.isFrozen()) {
+							JOptionPane.showMessageDialog(null, "账号已冻结，请及时解冻");
+						}else{
+							if (user == null) {
+								JOptionPane.showMessageDialog(null, "账号不存在");
 
-						}else	if (userNo.equals(user.getUserNo())
-								&& userPawd.equals(user.getUserPawd())) {
-							frame.setVisible(false);
-						} else if(!userPawd.equals(user.getUserPawd())){
+							}else	if (userNo.equals(user.getUserNo())
+									&& userPawd.equals(user.getUserPawd())) {
+								frame.setVisible(false);
+								customerFrame cf = new customerFrame(user);
+								cf.setVisible(true);
+							} else if(!userPawd.equals(user.getUserPawd())){
 
-							count++;
+								count++;
 
-							JOptionPane.showMessageDialog(null, "密码错误");
+								JOptionPane.showMessageDialog(null, "密码错误");
 
-							if(count>1){
+								if(count>1){
 
-								adminDAO.frozenUser(userNo);
+									adminDAO.frozenUser(userNo);
 
-							}else if(user.isFrozen() &&userPawd.equals(user.getUserPawd())){
+								}else if(user.isFrozen() &&userPawd.equals(user.getUserPawd())){
 
-							JOptionPane.showMessageDialog(null, "账号已冻结，请到营业厅办理解冻");
+								JOptionPane.showMessageDialog(null, "账号已冻结，请到营业厅办理解冻");
 
-						}else if(user.isDelete()&&userPawd.equals(user.getUserPawd())){
+							}else if(user.isDelete()&&userPawd.equals(user.getUserPawd())){
 
-							JOptionPane.showMessageDialog(null, "该账号已注销");
+								JOptionPane.showMessageDialog(null, "该账号已注销");
 
-						}else if(user.isLose()&&userPawd.equals(user.getUserPawd())){
+							}else if(user.isLose()&&userPawd.equals(user.getUserPawd())){
 
-							JOptionPane.showMessageDialog(null, "该账号已挂失，请到营业厅办理解冻");
+								JOptionPane.showMessageDialog(null, "该账号已挂失，请到营业厅办理解冻");
 
+							}
+
+							}
 						}
 
-						}
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();

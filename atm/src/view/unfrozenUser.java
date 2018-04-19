@@ -25,8 +25,10 @@ import dbConnection.Admin;
 import dbConnection.DAOFactory;
 import dbConnection.DAOInter;
 import dbConnection.User;
+import dbConnection.UserMsg;
 
 import javax.swing.JPasswordField;
+import javax.swing.SwingConstants;
 
 public class unfrozenUser extends JFrame {
 
@@ -36,7 +38,10 @@ public class unfrozenUser extends JFrame {
 	private JButton button;
 	private JButton btnNewButton;
 	DAOInter adminDAO = DAOFactory.getUserDAOFactory();
-	private JPasswordField passwordField;
+	private JPanel panel_2;
+	private JLabel punFro;
+	private JPanel panel_1;
+	private JLabel pname;
 
 	/**
 	 * Launch the application.
@@ -49,108 +54,151 @@ public class unfrozenUser extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 680, 508);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(0,0, 0, 0));
+		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-
 		JPanel panel = new JPanel();
 		contentPane.add(panel, BorderLayout.CENTER);
-		panel.setLayout(null);
-
-		textField = new JTextField();
-		textField.setBounds(296, 156, 182, 32);
-		panel.add(textField);
-		textField.setColumns(10);
 		ImageIcon icon = new ImageIcon("./image/atm.png");
 		icon.setImage(icon.getImage().getScaledInstance(icon.getIconWidth(),
-		icon.getIconHeight(), Image.SCALE_DEFAULT));
+				icon.getIconHeight(), Image.SCALE_DEFAULT));
 
-		lblNewLabel = new JLabel("\u8BF7\u8F93\u5165\u8D26\u53F7");
-		lblNewLabel.setFont(new Font("宋体", Font.PLAIN, 20));
-		lblNewLabel.setBounds(177, 156, 106, 35);
-		panel.add(lblNewLabel);
+		panel.setLayout(null);
 
-		button = new JButton("\u786E\u8BA4");
-		button.setFont(new Font("宋体", Font.PLAIN, 22));
-		button.setBounds(187, 283, 106, 47);
-		panel.add(button);
+		JLabel jla2 = new JLabel();
+		jla2.setBounds(0, 0, 680, 508);
 
-		btnNewButton = new JButton("\u9000\u51FA");
-		btnNewButton.setFont(new Font("宋体", Font.PLAIN, 22));
-		btnNewButton.setBounds(357, 282, 106, 47);
-		panel.add(btnNewButton);
+		jla2.setBackground(Color.LIGHT_GRAY);
+		jla2.setHorizontalAlignment(0);
+		jla2.setIcon(icon);
 
-		button.setFont(new Font("宋体", Font.PLAIN, 20));
 
-		JLabel lblNewLabel_1 = new JLabel("\u8BF7\u8F93\u5165\u5BC6\u7801");
-		lblNewLabel_1.setFont(new Font("宋体", Font.PLAIN, 20));
-		lblNewLabel_1.setBounds(177, 201, 125, 44);
-		panel.add(lblNewLabel_1);
+		panel_2 = new JPanel();
+		panel_2.setBounds(0, 0, 664, 469);
+		panel.add(panel_2);
+		panel_2.setLayout(null);
 
-		passwordField = new JPasswordField();
-		passwordField.setBounds(296, 210, 182, 32);
-		panel.add(passwordField);
-		JLabel jla = new JLabel();
-		jla.setBackground(Color.LIGHT_GRAY);
-		jla.setBounds(0, 3, 664, 474);
-		jla.setHorizontalAlignment(0);
-		jla.setIcon(icon);
-		panel.add(jla);
 
-		textField.addFocusListener(new FocusListener(){
+		pname = new JLabel("");
+		pname.setFont(new Font("宋体", Font.PLAIN, 16));
+		pname.setHorizontalAlignment(SwingConstants.CENTER);
+		pname.setBounds(192, 120, 241, 33);
+		panel_2.add(pname);
+
+		JLabel paccount = new JLabel("");
+		paccount.setHorizontalAlignment(SwingConstants.CENTER);
+		paccount.setBounds(192, 176, 241, 33);
+		paccount.setFont(new Font("宋体", Font.PLAIN, 16));
+		panel_2.add(paccount);
+
+		punFro = new JLabel("");
+		punFro.setHorizontalAlignment(SwingConstants.CENTER);
+		punFro.setBounds(192, 230, 241, 33);
+		punFro.setFont(new Font("宋体", Font.PLAIN, 16));
+		panel_2.add(punFro);
+
+		JButton yes = new JButton("\u786E\u8BA4");
+		yes.setBounds(178, 296, 77, 38);
+		yes.setFont(new Font("宋体", Font.PLAIN, 14));
+		panel_2.add(yes);
+
+		JButton no = new JButton("\u53D6\u6D88");
+		no.setBounds(368, 296, 77, 38);
+		no.setFont(new Font("宋体", Font.PLAIN, 14));
+		panel_2.add(no);
+		panel_2.add(jla2);
+		panel_2.setVisible(false);
+
+
+
+
+		yes.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				try {
+
+					adminDAO.unfrozenUser(textField.getText());
+					;
+					panel_2.setVisible(false);
+					panel_1.setVisible(true);
+					textField.setText("");
+
+
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+			}
+		});
+
+		no.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				panel_2.setVisible(false);
+				panel_1.setVisible(true);
+			}
+		});
+		panel_1 = new JPanel();
+		panel_1.setBounds(0, 0, 664, 469);
+		panel.add(panel_1);
+		panel_1.setLayout(null);
+
+		textField = new JTextField();
+		textField.setBounds(273, 143, 160, 33);
+		panel_1.add(textField);
+		textField.setColumns(10);
+
+		textField.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent e) {
 				// TODO Auto-generated method stub
 			}
+
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				if(!textField.getText().matches("^[0-9a-zA_Z]+$") && !"".trim().equals(textField.getText())){
-					JOptionPane.showMessageDialog(null,"只可输入数字和大小写英文");
+				if (!textField.getText().matches("^[0-9a-zA_Z]+$")
+						&& !"".trim().equals(textField.getText())) {
+					JOptionPane.showMessageDialog(null, "只可输入数字和大小写英文");
 					textField.setText("");
 				}
 
 			}
 
-        });
-
-		passwordField.addFocusListener(new FocusListener(){
-			char[] charPawds_1 = passwordField.getPassword();
-			String userPawd_1 = String.valueOf(charPawds_1);
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-
-				if(	!userPawd_1.matches("^[0-9a-zA_Z]+$")&&!"".trim().equals(userPawd_1)){
-					JOptionPane.showMessageDialog(null,"只可输入数字和大小写英文");
-					passwordField.setText("");
-				}
-			}
-
-        });
-
-
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				setVisible(false);
-				admin ad = new admin();
-				ad.setVisible(true);
-			}
 		});
 
+		lblNewLabel = new JLabel("\u8BF7\u8F93\u5165\u8D26\u53F7");
+		lblNewLabel.setBounds(152, 145, 100, 24);
+		panel_1.add(lblNewLabel);
+		lblNewLabel.setFont(new Font("宋体", Font.PLAIN, 20));
 
+		btnNewButton = new JButton("\u9000\u51FA");
+		btnNewButton.setBounds(360, 293, 84, 43);
+		panel_1.add(btnNewButton);
+		btnNewButton.setFont(new Font("宋体", Font.PLAIN, 22));
+
+		button = new JButton("\u786E\u8BA4");
+		button.setBounds(186, 295, 84, 43);
+		panel_1.add(button);
+		button.setFont(new Font("宋体", Font.PLAIN, 22));
+
+		button.setFont(new Font("宋体", Font.PLAIN, 20));
+		JLabel jla = new JLabel();
+		jla.setBounds(0, 0, 680, 508);
+
+		jla.setBackground(Color.LIGHT_GRAY);
+		jla.setHorizontalAlignment(0);
+		jla.setIcon(icon);
+		panel_1.add(jla);
 
 		button.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
-				char[] charPawds_1 = passwordField.getPassword();
-				String userPawd_1 = String.valueOf(charPawds_1);
+
 
 				User user = null;
 				try {
@@ -160,56 +208,54 @@ public class unfrozenUser extends JFrame {
 					e2.printStackTrace();
 				}
 
+				if ("".trim().equals(textField.getText())) {
 
-				if("".trim().equals(textField.getText())){
+					JOptionPane.showMessageDialog(null, "账号不可为空");
 
-                	JOptionPane.showMessageDialog(null,"账号不可为空");
+				} else if (user == null) {
 
-                }else if("".trim().equals(userPawd_1)){
+					JOptionPane.showMessageDialog(null, "账号不存在");
 
-                	JOptionPane.showMessageDialog(null,"密码不不可为空");
+				} else if (!user.isFrozen()) {
 
-                }else if(user == null){
+					JOptionPane.showMessageDialog(null, "账号已解冻");
 
-                	JOptionPane.showMessageDialog(null,"账号不存在");
+				} else {
 
-                }else if(!user.isFrozen()) {
-
-                	JOptionPane.showMessageDialog(null,"账号已解冻");
-
-                }else if(user.isLose()){
-
-                	try {
-						adminDAO.noLost(textField.getText());
-						textField.setText(null);
-						passwordField.setText(null);
-						JOptionPane.showMessageDialog(null,"解冻成功");
-
+					UserMsg userMsg = new UserMsg();
+					try {
+						userMsg = adminDAO.queryUserMsgByCusNo(user.getCusNo());
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 
+					panel_2.setVisible(true);
+					panel_1.setVisible(false);
 
+					paccount.setText("账号：" + user.getUserNo());
+					pname.setText("姓名：" + userMsg.getUserName());
+					if (user.isFrozen()) {
+						punFro.setText("是否已解冻：已解冻");
+					}
+					if (!user.isFrozen()) {
+						punFro.setText("是否已解冻：已解冻");
 
-                }else{
-
-                	try {
-						adminDAO.unfrozenUser(textField.getText());
-						textField.setText(null);
-						passwordField.setText(null);
-						JOptionPane.showMessageDialog(null,"解冻成功");
-
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
 					}
 
-                }
+				}
 
 			}
 		});
 
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				setVisible(false);
+				admin ad = new admin();
+				ad.setVisible(true);
+			}
+		});
 
 	}
 }
