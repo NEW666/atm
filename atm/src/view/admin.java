@@ -78,7 +78,11 @@ public class admin extends JFrame {
 		JButton exit = new JButton("\u9000\u51FA");
 		exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
+                login l = new login();
 				setVisible(false);
+				l.frame.setVisible(true);
+
 
 			}
 		});

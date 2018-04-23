@@ -30,7 +30,7 @@ import java.awt.event.ActionListener;
 
 public class login {
 
-	private JFrame frame;
+	public JFrame frame;
 	private JTextField textField;
 	private JPasswordField passwordField;
 	private  int count = 0;
@@ -125,13 +125,15 @@ public class login {
 					User user;
 					try {
 						user = adminDAO.queryUserById(userNo);
-						if (user.isFrozen()) {
-							JOptionPane.showMessageDialog(null, "账号已冻结，请及时解冻");
-						}else{
-							if (user == null) {
-								JOptionPane.showMessageDialog(null, "账号不存在");
 
-							}else	if (userNo.equals(user.getUserNo())
+						if(textField.getText().trim().equals("")){
+							JOptionPane.showMessageDialog(null, "账号不可为空");
+
+						}else if (user == null) {
+								JOptionPane.showMessageDialog(null, "账号不存在");
+							}else	if (user.isFrozen()) {
+							JOptionPane.showMessageDialog(null, "账号已冻结，请及时解冻");
+						}else	if (userNo.equals(user.getUserNo())
 									&& userPawd.equals(user.getUserPawd())) {
 								frame.setVisible(false);
 								customerFrame cf = new customerFrame(user);
@@ -161,7 +163,6 @@ public class login {
 							}
 
 							}
-						}
 
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block

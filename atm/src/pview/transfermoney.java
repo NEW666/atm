@@ -30,6 +30,7 @@ import javax.swing.border.LineBorder;
 import dbConnection.DAOFactory;
 import dbConnection.DAOImple;
 import dbConnection.DAOInter;
+import dbConnection.Record;
 import dbConnection.User;
 
 import java.awt.Color;
@@ -44,6 +45,12 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import javax.swing.UIManager;
@@ -56,7 +63,11 @@ public class transfermoney extends JFrame {
 	private JTextField textField_1;
 	DAOInter adminDAO = DAOFactory.getUserDAOFactory();
 	User user1 = null;
-	float total_money= 0;
+	float total_money = 0;
+	float au_money = 0;
+	ArrayList<Record> records = null;
+	Record record = null;
+	int i = 0;
 	/**
 	 * Launch the application.
 	 */
@@ -125,8 +136,8 @@ public class transfermoney extends JFrame {
 		tglbtnNewToggleButton.setBounds(587, 416, 65, 39);
 
 		ImageIcon icon = new ImageIcon("../atm/atm/image/atm.png");
-		icon.setImage(icon.getImage().getScaledInstance(icon.getIconWidth(),
-		icon.getIconHeight(), Image.SCALE_DEFAULT));
+		icon.setImage(
+				icon.getImage().getScaledInstance(icon.getIconWidth(), icon.getIconHeight(), Image.SCALE_DEFAULT));
 
 		panel.add(tglbtnNewToggleButton);
 		panel.add(label_1);
@@ -146,12 +157,11 @@ public class transfermoney extends JFrame {
 		panel.add(jla);
 		button.setEnabled(false);
 		String account = textField.getText(); /* 转账账号 */
-
-		/*float money = Float.parseFloat(textField_1.getText()); */
+		final int PRECISION = 2; // FIXME 小数位数为2， 建议可配
+		/* float money = Float.parseFloat(textField_1.getText()); */
 
 		/**
-		 * textField_1 -- 转账金额
-		 * textField -- 转账账号
+		 * textField_1 -- 转账金额 textField -- 转账账号
 		 *
 		 */
 
@@ -180,79 +190,36 @@ public class transfermoney extends JFrame {
 				if (textField_1.getText().equals("")) {
 					button.setEnabled(false);
 				}
-				int keyChar = e.getKeyChar();
-				if (keyChar >= KeyEvent.VK_0 && keyChar <= KeyEvent.VK_9) {
+				String text = textField_1.getText(); // 当前输入框内容
+				char ch = e.getKeyChar(); // 准备附加到输入框的字符
 
-				} else {
-					e.consume(); // 关键，屏蔽掉非法输入
-				}
-			}
+				// 限制不能输入非数字和小数点
+				if (!(ch >= '0' && ch <= '9') && ch != '.') {
+					e.consume(); // 销毁当前输入字符
 
-		});
+					// 限制不能是小数点开头
+				} else if ("".equals(text) && ch == '.') {
+					e.consume();
 
-		/*textField.addFocusListener(new FocusListener() {
+				} else if (text.contains(".")) {
 
-			@Override
-			public void focusLost(FocusEvent e) {
-				// TODO Auto-generated method stub
-				try {
-					user1 = adminDAO.queryUserById(textField.getText());
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				System.out.println(user1);
-				if(textField_1.getText().equals("") || textField.getText().equals("") || !user1.getUserNo().equals(textField.getText())){
-					button.setEnabled(false);
-				}
-				if(textField.getText().equals("")){
-					button.setEnabled(false);
-				}else if(!textField.getText().equals("")){
+					// 限制不能重复输入小数点
+					if (ch == '.') {
+						e.consume();
 
-					if(user1.equals("") ||  !textField.getText().equals(user1.getUserNo())){
-						JOptionPane.showMessageDialog(null, "账号错误");
-						textField.setText("");
+						// 限制小数为2位数
+					} else {
+						int idx = text.indexOf('.');
+						String tmp = text.substring(idx + 1);
+						if (tmp.length() >= PRECISION) {
+							e.consume();
+						}
 					}
 				}
 
 			}
 
-			@Override
-			public void focusGained(FocusEvent e) {
-				// TODO Auto-generated method stub
-				if(textField_1.getText().equals("") || textField.getText().equals("") || !user1.getUserNo().equals(textField.getText())){
-					button.setEnabled(false);
-				}
-				if(textField.getText().equals("")){
-					button.setEnabled(false);
-				}else{
-					button.setEnabled(true);
-				}
-			}
 		});
-		textField_1.addFocusListener(new FocusListener() {
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				// TODO Auto-generated method stub
-				if(!textField.getText().equals("") && textField_1.getText().equals("")){
-					button.setEnabled(false);
-				}else {
-					button.setEnabled(true);
-				}
-			}
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				// TODO Auto-generated method stub
-				if(textField_1.getText().equals("")){
-					button.setEnabled(false);
-				}else {
-					button.setEnabled(true);
-				}
-			}
-		});
-*/
 
 		// 提交
 		button.addActionListener(new ActionListener() {
@@ -260,10 +227,12 @@ public class transfermoney extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String account = textField.getText(); /* 转账账号 */
-				User user2=null;
+				User user2 = null;
 				float money;
-				/*System.out.println(account+"1");
-				System.out.println(user1.getUserNo()+"/");*/
+				/*
+				 * System.out.println(account+"1");
+				 * System.out.println(user1.getUserNo()+"/");
+				 */
 				try {
 					user1 = adminDAO.queryUserById(account);
 				} catch (Exception e2) {
@@ -271,19 +240,19 @@ public class transfermoney extends JFrame {
 					e2.printStackTrace();
 				}
 
-				if(user1 == null){
+				if (user1 == null) {
 					JOptionPane.showMessageDialog(null, "账号不存在");
 
-				}else if(user1!=null){
+				} else if (user1 != null) {
 
 					if (textField.getText().equals("")) {
 						JOptionPane.showMessageDialog(null, "账号不能为空");
 						textField.setText("");
 						textField_1.setText("");
-					}else if (textField_1.getText().equals("")) {
+					} else if (textField_1.getText().equals("")) {
 						textField_1.setText("");
 					}
-					if(user1.equals("") || !account.equals(user1.getUserNo()) || account.equals("")){
+					if (user1.equals("") || !account.equals(user1.getUserNo()) || account.equals("")) {
 						JOptionPane.showMessageDialog(null, "账号错误");
 						textField.setText("");
 					}
@@ -294,17 +263,16 @@ public class transfermoney extends JFrame {
 						e3.printStackTrace();
 					}
 
-					if(textField_1.getText().trim().equals("")){
+					if (textField_1.getText().trim().equals("")) {
 
 						JOptionPane.showMessageDialog(null, "输入金额不可为0");
 						return;
 
 					}
-						money = Float.parseFloat(textField_1.getText()); /* 转账金额 */
+					money = Float.parseFloat(textField_1.getText()); /* 转账金额 */
 
-
-
-					if (user1 != null&& user1.getUserNo().equals(account) && !user1.getUserNo().equals(user.getUserNo())) {
+					if (user1 != null && user1.getUserNo().equals(account)
+							&& !user1.getUserNo().equals(user.getUserNo())) {
 						if (user1.isDelete()) {
 
 							JOptionPane.showMessageDialog(null, "账号已被注销，无法转账");
@@ -313,43 +281,40 @@ public class transfermoney extends JFrame {
 							cf.setVisible(true);
 						} else {
 
-							if(money ==0){
+							if (money == 0) {
 
 								JOptionPane.showMessageDialog(null, "输入金额不可为0，请重新输入");
-
-							}else if (money < 0) {
-								JOptionPane.showMessageDialog(null, "输入金额不正确，请重新输入");
-								textField_1.setText("");
-							} else if (money % 100 != 0) {
-								JOptionPane.showMessageDialog(null, "请输入整数金额");
 								textField_1.setText("");
 							} else {
-								/*跨行转账*/
-								if(user1.getBe_bank() != "中国银行"){
-									money = (float) (money * (1-0.003));
-								}
-								total_money = total_money + money;
 								try {
 									user2 = adminDAO.queryUserById(user.getUserNo());
+									/*records = adminDAO.getRecordByHalfMonth(user2.getUserNo());*/
 								} catch (Exception e2) {
 									// TODO Auto-generated catch block
 									e2.printStackTrace();
 								}
-								if(total_money > 50000 || user2.getTotal() < money){
+								/* 跨行转账 */
+								money = Float.parseFloat(textField_1.getText()); /* 转账金额 */
+								if (!user1.getBe_bank().equals("中国银行")) {
+									au_money = (float) (money * (1 + 0.0003));
+									total_money = total_money + money ;
+								} else {
+									au_money = money;
+									total_money = total_money + money;
+								}
+								System.out.println(total_money);
+								if (total_money > 50000 || user2.getTotal() < au_money) {
 									JOptionPane.showMessageDialog(null, "转账已达上限，无法继续转账");
-									textField.setText("");
-									customerFrame cf = new customerFrame(user);
-									cf.setVisible(true);
-									setVisible(false);
-								}else{
+									total_money = total_money - money ;
+									textField_1.setText("");
+								} else {
 									try {
 										/* 一个账户取钱 */
-										adminDAO.transfer(user2.getUserNo(), -money);
-										adminDAO.saveRecord(user2.getUserNo(),money,"转账",user1.getUserNo());
+										adminDAO.transfer(user2.getUserNo(), -au_money);
+										adminDAO.saveRecord(user2.getUserNo(), money, "转账", user1.getUserNo());
 										// 一个账户存钱
 										adminDAO.transfer(user1.getUserNo(), money);
 										JOptionPane.showMessageDialog(null, "转账成功");
-										textField.setText(null);
 										textField_1.setText(null);
 									} catch (Exception e1) {
 										// TODO Auto-generated catch block
@@ -358,11 +323,11 @@ public class transfermoney extends JFrame {
 								}
 							}
 						}
-					} else if(textField.getText().equals(user.getUserNo())){
+					} else if (textField.getText().equals(user.getUserNo())) {
 
 						JOptionPane.showMessageDialog(null, "不可转账给自己");
 
-					}else{
+					} else {
 						JOptionPane.showMessageDialog(null, "账号输入错误，请重新输入");
 						textField.setText("");
 					}

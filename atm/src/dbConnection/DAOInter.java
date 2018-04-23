@@ -51,6 +51,10 @@ public interface DAOInter {
 
 	public ArrayList<Record> queryUnclearMethodByUserNoAndSEtime(String userNo,Timestamp timestamp1,Timestamp timestamp2) throws Exception;//模糊查询+起始时间
 
+	public ArrayList<Record> queryUnclearMethodByUserNoAndOtime(String userNo,Timestamp timestamp) throws Exception;//模糊查询 1天
+
+	public ArrayList<Record> queryUnclearMethodByUserNoAndEtime(String userNo,Timestamp timestamp) throws Exception;//模糊查询+结束时间
+
 
 
 

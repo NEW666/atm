@@ -100,9 +100,9 @@ public class chPawds extends JFrame {
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				if (!account.getText().matches("^[0-9a-zA_Z]+$")
+				if (!account.getText().matches("^[0-9]{1,13}$")
 						&& !"".trim().equals(account.getText())) {
-					JOptionPane.showMessageDialog(null, "只可输入数字和大小写英文");
+					JOptionPane.showMessageDialog(null, "账号只可输入13位数字");
 				}
 
 			}
@@ -132,9 +132,14 @@ public class chPawds extends JFrame {
 					e2.printStackTrace();
 				}
 
-				if (!userPawd_1.equals(userPawd_2) && !userPawd_2.equals(null)) {
+				 if(userPawd_1.length()!=6||userPawd_2.length()!=6||!userPawd_1.matches("^[0-9]{1,6}$")||!userPawd_2.matches("^[0-9]{1,6}$")){
+
+						JOptionPane.showMessageDialog(null, "密码只可为6位数字");
+
+					}else if (!userPawd_1.equals(userPawd_2) && !userPawd_2.equals(null)) {
 					JOptionPane.showMessageDialog(null, "密码不一致");
-				} else if ("".trim().equals(userPawd_2)) {
+
+					} else if ("".trim().equals(userPawd_2)) {
 
 					JOptionPane.showMessageDialog(null, "确认密码框不可为空");
 

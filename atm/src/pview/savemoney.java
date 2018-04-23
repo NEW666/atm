@@ -43,6 +43,7 @@ public class savemoney extends JFrame {
 	DAOInter adminDAO = DAOFactory.getUserDAOFactory();
 	float total_save = 0;
 	Record record = null;
+	float au_money = 0;
 	/**
 	 * Launch the application.
 	 */
@@ -69,23 +70,23 @@ public class savemoney extends JFrame {
 		contentPane.add(panel, BorderLayout.CENTER);
 
 		textField = new JTextField();
-		textField.setBounds(285, 166, 188, 40);
+		textField.setBounds(264, 162, 173, 32);
 		textField.setFont(new Font("宋体", Font.BOLD, 14));
 		textField.setColumns(20);
 
 		JLabel label = new JLabel("\u5B58\u5165\u91D1\u989D");
-		label.setBounds(162, 166, 100, 37);
-		label.setFont(new Font("宋体", Font.PLAIN, 20));
+		label.setBounds(175, 163, 71, 29);
+		label.setFont(new Font("宋体", Font.PLAIN, 16));
 
 		JButton button = new JButton("\u786E\u5B9A");
-		button.setBounds(180, 250, 82, 40);
+		button.setBounds(151, 250, 82, 40);
 
 		JButton btnNewButton = new JButton("\u91CD\u7F6E");
-		btnNewButton.setBounds(367, 250, 86, 40);
+		btnNewButton.setBounds(355, 250, 86, 40);
 
 		JButton button_1 = new JButton("\u9000\u51FA");
-		button_1.setBounds(579, 400, 74, 40);
-		button_1.setFont(new Font("微软雅黑", Font.PLAIN, 14));
+		button_1.setBounds(561, 393, 82, 40);
+		button_1.setFont(new Font("微软雅黑", Font.BOLD, 14));
 		panel.setLayout(null);
 		panel.add(button);
 		panel.add(btnNewButton);
@@ -94,14 +95,15 @@ public class savemoney extends JFrame {
 		panel.add(button_1);
 		button.setEnabled(false);
 		ImageIcon icon = new ImageIcon("./image/atm.png");
-		icon.setImage(
-				icon.getImage().getScaledInstance(icon.getIconWidth(), icon.getIconHeight(), Image.SCALE_DEFAULT));
+		icon.setImage(icon.getImage().getScaledInstance(icon.getIconWidth(),
+				icon.getIconHeight(), Image.SCALE_DEFAULT));
 		JLabel jla = new JLabel();
-		jla.setBounds(0, 3, 664, 474);
 		jla.setBackground(Color.LIGHT_GRAY);
+		jla.setBounds(0, 3, 663, 466);
 		jla.setHorizontalAlignment(0);
 		jla.setIcon(icon);
 		panel.add(jla);
+
 		/**
 		 * textField 输入金额
 		 *  button 确定
@@ -151,19 +153,23 @@ public class savemoney extends JFrame {
 				User user1 = null;
 				String text = textField.getText();
 				float money = Float.parseFloat(text);
-				if (!text.matches("^[1-9][0-9]\\d*{3,5}$")) {
+				if(text.equals("") || money == 0){
 					JOptionPane.showMessageDialog(null, "输入金额格式错误");
 					textField.setText("");
-				} else if (money > 10000 || money < 0) {
+				}else if (money > 10000) {
 					JOptionPane.showMessageDialog(null, "存款金额过大，请重新存款");
 					textField.setText("");
 				} else if (money % 100 != 0) {
-					JOptionPane.showMessageDialog(null, "存入金额不为整百,请重新存款");
+					JOptionPane.showMessageDialog(null, "存入金额不为整数,请重新存款");
 					textField.setText("");
 				} else {
 					/*跨行存款收手续费*/
-					if(user.getBe_bank() != "中国银行"){
-						money = (float) (money * (1-0.003));
+					if(!user.getBe_bank().equals("中国银行")){
+						au_money = (float) (money * (1-0.003));
+						total_save = total_save + money;
+					}else {
+						au_money = money;
+						total_save = total_save + money;
 					}
 					try {
 						user1 = adminDAO.queryUserById(user.getUserNo());
@@ -171,16 +177,15 @@ public class savemoney extends JFrame {
 						// TODO Auto-generated catch block
 						e2.printStackTrace();
 					}
-					total_save = total_save + money;
-					if (user1.getTotal() > 50000 || total_save > 50000) {
-						JOptionPane.showMessageDialog(null, "存入金额已达上限,无法继续存款");
-						customerFrame cf = new customerFrame(user);
-						cf.setVisible(true);
-						setVisible(false);
+					if (total_save > 50000) {
+						JOptionPane.showMessageDialog(null, "存入金额超过上限,无法继续存款");
+						total_save = total_save - money ;
+						textField.setText("");
 					}else{
 						try {
 							// 存款
-							adminDAO.saveMoney(user1.getUserNo(), money);
+							adminDAO.saveMoney(user1.getUserNo(), au_money);
+
 							// 插入存款记录
 							adminDAO.saveRecord(user.getUserNo(), money, "存款", user.getUserNo());
 							JOptionPane.showMessageDialog(null, "存款成功");
@@ -217,3 +222,4 @@ public class savemoney extends JFrame {
 		});
 	}
 }
+

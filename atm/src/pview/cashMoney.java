@@ -3,7 +3,6 @@ package pview;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.Image;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -16,10 +15,11 @@ import dbConnection.User;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
-
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -29,7 +29,6 @@ import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -41,6 +40,7 @@ public class cashMoney extends JFrame {
 	DAOInter adminDAO  = DAOFactory.getUserDAOFactory();
 	float total_money= 0;
 	Record record = null;
+	float au_money = 0;
 	/**
 	 * Launch the application.
 	 */
@@ -255,48 +255,38 @@ public class cashMoney extends JFrame {
 					textField.setText("");
 				}else{
 					/*跨行取款收手续费*/
-					if(user.getBe_bank() != "中国银行"){
-						money = (float) (money * (1+0.003));
-					}
-					try {
-						user1 = adminDAO.queryUserById(user.getUserNo());
-					} catch (Exception e2) {
-						// TODO Auto-generated catch block
-						e2.printStackTrace();
+					if(!user.getBe_bank().equals("中国银行")){
+						au_money = (float) (money * (1+0.003));
+						total_money = total_money + money;
+					}else {
+						au_money = money;
+						total_money = total_money + money;
 					}
 					/*测试语句System.out.println(user.getBe_bank().toString().trim());*/
-					if(money > user1.getTotal()){
+					if(au_money > user.getTotal()){
 						JOptionPane.showMessageDialog(null, "余额不足，请重新输入");
-						System.out.println(money);
-						System.out.println(user.getTotal());
 						textField.setText("");
-
-					}else {
-						total_money = total_money + money;
-						System.out.println(total_money);
-						if(total_money > 10000){
-							JOptionPane.showMessageDialog(null, "取出金额已达上限,无法继续取款");
+						return;
+					}
+					System.out.println(total_money);
+					if(total_money > 10000){
+						JOptionPane.showMessageDialog(null, "取出金额超过上限,无法取款");
+						total_money = total_money - money ;
+						textField.setText("");
+					}else{
+						/*取款*/
+						try {
+							//取款
+							adminDAO.saveMoney(user.getUserNo(),-au_money);
+							adminDAO.saveRecord(user.getUserNo(),money,"取款",user.getUserNo());
+							JOptionPane.showMessageDialog(null, "取款成功");
 							textField.setText("");
-							/*customerFrame cf = new customerFrame(user);
-							cf.setVisible(true);
-							setVisible(false);*/
-						}else{
-							/*取款*/
-							try {
-								//存款
-								adminDAO.saveMoney(user1.getUserNo(),-money);
-								adminDAO.saveRecord(user1.getUserNo(),money,"取款",user.getUserNo());
-								JOptionPane.showMessageDialog(null, "取款成功");
-								textField.setText("");
-								button_1.setEnabled(false);
-								return;
-							} catch (Exception e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
+							return;
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
 						}
 					}
-
 
 				}
 			}

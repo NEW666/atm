@@ -70,18 +70,18 @@ public class query extends JFrame {
 	 * Create the frame.
 	 */
 
-//	public static void main(String[] args) {
-//	EventQueue.invokeLater(new Runnable() {
-//		public void run() {
-//			try {
-//				query frame = new query();
-//				frame.setVisible(true);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-//	});
-//}
+	public static void main(String[] args) {
+	EventQueue.invokeLater(new Runnable() {
+		public void run() {
+			try {
+				query frame = new query();
+				frame.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	});
+}
 	public query() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 680, 508);
@@ -181,7 +181,6 @@ public class query extends JFrame {
 				ArrayList<Record> arrayList = new ArrayList<Record>();
 				try {
 					arrayList = adminDAO.queryUnclearMethodByUserNo(account.getText());
-					System.out.println(arrayList);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -214,7 +213,18 @@ public class query extends JFrame {
 
 				}else if(!account.getText().trim().equals("")&&datepick.getDate()==null&&datepick2.getDate()==null){
 
-					tableModel = new DefaultTableModel(queryUnClear() , head) {
+					if(queryUnClear() == null){
+
+						tableModel = new DefaultTableModel(null , head) {
+							public boolean isCellEditable(int row, int column) {
+								return false;
+							}
+						};
+
+						table.setModel(tableModel);
+						scrollPane.setVisible(true);
+					}else {
+						tableModel = new DefaultTableModel(queryUnClear() , head) {
 						public boolean isCellEditable(int row, int column) {
 							return false;
 						}
@@ -222,19 +232,74 @@ public class query extends JFrame {
 
 					table.setModel(tableModel);
 					scrollPane.setVisible(true);
+					}
+
+
 
 				}else if(!account.getText().trim().equals("") && datepick.getDate() != null&&datepick2.getDate()==null){
 
-					tableModel = new DefaultTableModel(queryUnClearAndStime() , head) {
-						public boolean isCellEditable(int row, int column) {
-							return false;
-						}
-					};
 
-					table.setModel(tableModel);
-					scrollPane.setVisible(true);
+					if(queryUnClearAndStime() == null){
 
-				}else if(datepick.getDate().getTime() >= datepick.getDate().getTime()){
+						tableModel = new DefaultTableModel(null , head) {
+							public boolean isCellEditable(int row, int column) {
+								return false;
+							}
+						};
+
+						table.setModel(tableModel);
+						scrollPane.setVisible(true);
+
+
+
+					}else if(queryUnClearAndStime() != null){
+
+						tableModel = new DefaultTableModel(queryUnClearAndStime(), head) {
+							public boolean isCellEditable(int row, int column) {
+								return false;
+							}
+						};
+
+						table.setModel(tableModel);
+						scrollPane.setVisible(true);
+
+					}
+
+
+
+				}else if(!account.getText().trim().equals("")  && datepick2.getDate() !=null && datepick.getDate() == null){
+
+					System.out.println("a");
+
+					if(queryUnClearAndEtime() == null){
+
+						tableModel = new DefaultTableModel(null , head) {
+							public boolean isCellEditable(int row, int column) {
+								return false;
+							}
+						};
+
+						table.setModel(tableModel);
+						scrollPane.setVisible(true);
+
+
+
+					}else if(queryUnClearAndEtime() != null){
+
+						tableModel = new DefaultTableModel(queryUnClearAndEtime(), head) {
+							public boolean isCellEditable(int row, int column) {
+								return false;
+							}
+						};
+
+						table.setModel(tableModel);
+						scrollPane.setVisible(true);
+
+					}
+
+
+
+				}else if(datepick.getDate()!=null&&datepick2.getDate()!=null&& datepick.getDate().getTime() > datepick2.getDate().getTime() ){
 
 					JOptionPane.showMessageDialog(null, "起始时间不可大于结束时间");
 					tableModel = new DefaultTableModel(null, head) {
@@ -246,16 +311,54 @@ public class query extends JFrame {
 					table.setModel(tableModel);
 					scrollPane.setVisible(true);
 
-				}else if(!account.getText().trim().equals("") && datepick.getDate() != null&&datepick2.getDate() !=null){
+				}else if(!account.getText().trim().equals("") && datepick.getDate() != null&&datepick2.getDate() !=null &&datepick.getDate().compareTo(datepick2.getDate()) !=0){
 
 
-					tableModel = new DefaultTableModel(queryUnClearAndSEtime() , head) {
-						public boolean isCellEditable(int row, int column) {
-							return false;
-						}
-					};
-					table.setModel(tableModel);
-					scrollPane.setVisible(true);
+					if(queryUnClearAndSEtime()== null){
+
+						tableModel = new DefaultTableModel(null , head) {
+							public boolean isCellEditable(int row, int column) {
+								return false;
+							}
+						};
+						table.setModel(tableModel);
+						scrollPane.setVisible(true);
+
+					}else{
+
+						tableModel = new DefaultTableModel(queryUnClearAndSEtime() , head) {
+							public boolean isCellEditable(int row, int column) {
+								return false;
+							}
+						};
+						table.setModel(tableModel);
+						scrollPane.setVisible(true);
+					}
+				}else if(!account.getText().trim().equals("") && datepick.getDate() != null&&datepick2.getDate() !=null &&datepick.getDate().compareTo(datepick2.getDate()) ==0 ){
+
+
+					System.out.println(queryUnClearAndOtime()== null);
+					System.out.println(queryUnClearAndOtime()!= null);
+
+					if(queryUnClearAndOtime()== null){
+
+						tableModel = new DefaultTableModel(null , head) {
+							public boolean isCellEditable(int row, int column) {
+								return false;
+							}
+						};
+						table.setModel(tableModel);
+						scrollPane.setVisible(true);
+
+					}else{
+						tableModel = new DefaultTableModel(queryUnClearAndOtime() , head) {
+							public boolean isCellEditable(int row, int column) {
+								return false;
+							}
+						};
+						table.setModel(tableModel);
+						scrollPane.setVisible(true);
+					}
 
 				}
 
@@ -272,7 +375,7 @@ public class query extends JFrame {
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				if (!account.getText().matches("^[0-9a-zA_Z]+$")
+				if (!account.getText().matches("^[0-9]{1,13}$")
 						&& !"".trim().equals(account.getText())) {
 					JOptionPane.showMessageDialog(null, "只可输入数字");
 
@@ -296,61 +399,6 @@ public class query extends JFrame {
 
 	}
 
-//	public Object[][] queryHalfMonth() {
-//		ArrayList<Record> records =new ArrayList<Record>();
-//		try {
-//			records = adminDAO.queryHalfMonth(account.getText().trim());
-//			System.out.println(records.size());
-//
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//
-//		if (!records.isEmpty()) {
-//			data = new Object[records.size()][head.length];
-//
-//			for (int i = 0; i < records.size(); i++) {
-//				for (int j = 0; j < head.length; j++) {
-//					data[i][0] = records.get(i).getUserNo();
-//					data[i][1] = records.get(i).getTime();
-//					data[i][2] = records.get(i).getMoney();
-//					data[i][3] = records.get(i).getRe_type();
-//					data[i][4] = records.get(i).getTf_tarString();
-//
-//				}
-//			}
-//
-//		}
-//		return data;
-//	}
-//	public Object[][] queryHalfYear(){
-//		ArrayList<Record> records =new ArrayList<Record>();
-//		try {
-//			records = adminDAO.queryHalfYear(account.getText().trim());
-//			System.out.println(records);
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//
-//		if (!records.isEmpty()) {
-//			data = new Object[records.size()][head.length];
-//
-//			for (int i = 0; i < records.size(); i++) {
-//				for (int j = 0; j < head.length; j++) {
-//					data[i][0] = records.get(i).getUserNo();
-//					data[i][1] = records.get(i).getTime();
-//					data[i][2] = records.get(i).getMoney();
-//					data[i][3] = records.get(i).getRe_type();
-//					data[i][4] = records.get(i).getTf_tarString();
-//
-//				}
-//			}
-//
-//		}
-//		return data;
-//	}
 
 
 	public Object[][] queryUnClear(){
@@ -378,19 +426,22 @@ public class query extends JFrame {
 				}
 			}
 
+			return data;
 		}
-		return data;
+
+		return null;
+
 	}
 
 
 
 	public Object[][] queryUnClearAndStime(){
 		ArrayList<Record> records =new ArrayList<Record>();
+
 		final Timestamp t = new Timestamp(datepick.getDate().getTime());
+
 		try {
 			records = adminDAO.queryUnclearMethodByUserNoAndStime(account.getText(),t );
-			System.out.println(records);
-
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -410,8 +461,12 @@ public class query extends JFrame {
 				}
 			}
 
+			return data;
+
 		}
-		return data;
+
+		return null;
+
 	}
 
 
@@ -424,6 +479,41 @@ public class query extends JFrame {
 
 		try {
 			records = adminDAO.queryUnclearMethodByUserNoAndSEtime(account.getText(),t ,t2);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (!records.isEmpty()) {
+			data = new Object[records.size()][head.length];
+
+			for (int i = 0; i < records.size(); i++) {
+				for (int j = 0; j < head.length; j++) {
+					data[i][0] = records.get(i).getUserNo();
+					data[i][1] = records.get(i).getTime();
+					data[i][2] = records.get(i).getMoney();
+					data[i][3] = records.get(i).getRe_type();
+					data[i][4] = records.get(i).getTf_tarString();
+
+				}
+			}
+
+			return data;
+		}
+
+		return null;
+
+
+
+	}
+
+
+	public Object[][] queryUnClearAndOtime(){
+		ArrayList<Record> records =new ArrayList<Record>();
+		final Timestamp t = new Timestamp(datepick.getDate().getTime());
+
+		try {
+			records = adminDAO.queryUnclearMethodByUserNoAndOtime(account.getText(),t);
 			System.out.println(records);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -444,9 +534,46 @@ public class query extends JFrame {
 				}
 			}
 
+			return data;
 		}
-		return data;
+
+	  return null;
 	}
+
+
+
+	public Object[][] queryUnClearAndEtime(){
+		ArrayList<Record> records =new ArrayList<Record>();
+		final Timestamp t = new Timestamp(datepick2.getDate().getTime());
+
+		try {
+			records = adminDAO.queryUnclearMethodByUserNoAndEtime(account.getText(),t);
+			System.out.println(records);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (!records.isEmpty()) {
+			data = new Object[records.size()][head.length];
+
+			for (int i = 0; i < records.size(); i++) {
+				for (int j = 0; j < head.length; j++) {
+					data[i][0] = records.get(i).getUserNo();
+					data[i][1] = records.get(i).getTime();
+					data[i][2] = records.get(i).getMoney();
+					data[i][3] = records.get(i).getRe_type();
+					data[i][4] = records.get(i).getTf_tarString();
+
+				}
+			}
+
+			return data;
+		}
+
+	  return null;
+	}
+
 
 
 }

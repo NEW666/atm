@@ -569,7 +569,7 @@ public class DAOImple implements DAOInter {
 	//模糊查询+起始时间
 	public ArrayList<Record> queryUnclearMethodByUserNoAndStime(String userNo,Timestamp timestamp) throws Exception{
 
-		String sql = "select * from record  where   re_time >= ?AND userNo like  ? ";
+		String sql = "SELECT * FROM record WHERE TO_DAYS(re_time) >= TO_DAYS(?) AND userNo LIKE ? ";
 		String sqlp ="%"+userNo + "%";
 		conDatabase dbc = null;
 		PreparedStatement pstmt = null;
@@ -581,6 +581,7 @@ public class DAOImple implements DAOInter {
 			dbc = new conDatabase();
 			pstmt = dbc.getConnection().prepareStatement(sql);
 
+			System.out.println(timestamp.toString());
 		    pstmt.setString(1, timestamp.toString());
      		pstmt.setString(2, sqlp);
 
@@ -617,7 +618,9 @@ public class DAOImple implements DAOInter {
 	public ArrayList<Record> queryUnclearMethodByUserNoAndSEtime(String userNo,Timestamp timestamp1,Timestamp timestamp2) throws Exception{
 
 
-		String sql = "select * from record where   re_time >= ?  AND  re_time <= ? AND userNo like  ? ";
+
+//		String sql = "select * from record where   re_time >= ?  AND  re_time <= ? AND userNo like  ? ";
+		String sql = "SELECT * FROM record WHERE TO_DAYS(re_time) BETWEEN TO_DAYS(?) AND TO_DAYS(?)AND userNo LIKE ?";
 		String sqlp ="%"+userNo + "%";
 		conDatabase dbc = null;
 		PreparedStatement pstmt = null;
@@ -628,9 +631,106 @@ public class DAOImple implements DAOInter {
 
 			dbc = new conDatabase();
 			pstmt = dbc.getConnection().prepareStatement(sql);
+
+			System.out.println( timestamp1.toString());
+			System.out.println( timestamp2.toString());
+
 			pstmt.setString(1, timestamp1.toString());
 			pstmt.setString(2, timestamp2.toString());
      		pstmt.setString(3, sqlp);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+
+				Record re = new Record();
+				re.setTransNo(rs.getString(1));
+				re.setUserNo(rs.getString(2));
+				re.setMoney(rs.getInt(3));
+				re.setTime(rs.getTimestamp(4));
+				re.setRe_type(rs.getString(5));
+				re.setTf_tarString(rs.getString(6));
+
+				records.add(re);
+
+			}
+
+			rs.close();
+			pstmt.close();
+			dbc.close();
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+		return records;
+
+
+
+
+	}
+	//模糊查询+某一天之前
+	public ArrayList<Record> queryUnclearMethodByUserNoAndEtime(String userNo,Timestamp timestamp) throws Exception{
+
+
+		String sql = "SELECT * FROM record WHERE TO_DAYS(re_time) <= TO_DAYS(?) AND userNo LIKE ? ";
+		String sqlp ="%"+userNo + "%";
+		conDatabase dbc = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<Record> records = new ArrayList<Record>();
+
+		try {
+
+			dbc = new conDatabase();
+			pstmt = dbc.getConnection().prepareStatement(sql);
+			pstmt.setString(1, timestamp.toString());
+     		pstmt.setString(2, sqlp);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+
+				Record re = new Record();
+				re.setTransNo(rs.getString(1));
+				re.setUserNo(rs.getString(2));
+				re.setMoney(rs.getInt(3));
+				re.setTime(rs.getTimestamp(4));
+				re.setRe_type(rs.getString(5));
+				re.setTf_tarString(rs.getString(6));
+
+				records.add(re);
+
+			}
+
+			rs.close();
+			pstmt.close();
+			dbc.close();
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+		return records;
+
+
+
+
+	}
+
+	//模糊查询+某一天
+	public ArrayList<Record> queryUnclearMethodByUserNoAndOtime(String userNo,Timestamp timestamp) throws Exception{
+
+
+		String sql = "SELECT * FROM record WHERE TO_DAYS(re_time) = TO_DAYS(?) AND userNo LIKE ? ";
+		String sqlp ="%"+userNo + "%";
+		conDatabase dbc = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<Record> records = new ArrayList<Record>();
+
+		try {
+
+			dbc = new conDatabase();
+			pstmt = dbc.getConnection().prepareStatement(sql);
+			pstmt.setString(1, timestamp.toString());
+     		pstmt.setString(2, sqlp);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 
